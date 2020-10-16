@@ -63,6 +63,10 @@ public class PersonTest {
         listNum.remove(String.valueOf(LocalDate.now().getDayOfMonth()));
         Random y = new Random();
         int day = y.nextInt(7);
+
+        //LocalDate dataManipulacao = LocalDate.now();
+        //dataManipulacao.plusDays(5).plusMonths(1);
+
         String date = LocalDate.now().getYear() + "-" + LocalDate.now().getMonthValue() + "-0" +  listNum.get(day);
         a.setBirthday(LocalDate.parse(date));
 
