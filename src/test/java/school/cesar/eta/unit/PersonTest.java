@@ -59,9 +59,9 @@ public class PersonTest {
     @Test
     public void isBirthdayToday_sameMonthDifferentDay_false() {
         Person person = new Person();
-        LocalDate date = LocalDate.parse("2020-10-15");
+        LocalDate date = LocalDate.parse("2020-10-01");
         person.setBirthday(date);
-        Assertions.assertTrue(person.isBirthdayToday());
+        Assertions.assertFalse(person.isBirthdayToday());
     }
 
     @Test
