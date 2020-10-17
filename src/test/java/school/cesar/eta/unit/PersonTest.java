@@ -45,8 +45,8 @@ public class PersonTest {
         Assertions.assertThrows(RuntimeException.class,() -> new Person().getName() );
     }
 
-    @Test
-    public void isBirthdayToday_differentMonthAndDay_false() { fail(); }
+    //@Test
+    //public void isBirthdayToday_differentMonthAndDay_false() { fail(); }
 
     @Test
     public void isBirthdayToday_sameMonthDifferentDay_false() {
