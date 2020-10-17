@@ -19,7 +19,6 @@ public class PersonTest {
 
     @Test
     public void getName_firstNameJonLastNameSnow_jonSnow() {
-        fail();
         a.setName("Jon");
         a.setLastName("Snow");
 
@@ -28,7 +27,6 @@ public class PersonTest {
 
     @Test
     public void getName_firstNameJonNoLastName_jon() {
-        fail();
         a.setName("Jon");
 
         Assertions.assertEquals("Jon" , a.getName());
@@ -36,7 +34,6 @@ public class PersonTest {
 
     @Test
     public void getName_noFirstNameLastNameSnow_snow() {
-        fail();
         a.setLastName("Snow");
 
         Assertions.assertEquals("Snow", a.getName());
@@ -44,7 +41,6 @@ public class PersonTest {
 
     @Test
     public void getName_noFirstNameNorLastName_throwsException() {
-        fail();
 
         Assertions.assertThrows(RuntimeException.class,() -> new Person().getName() );
     }
@@ -54,7 +50,6 @@ public class PersonTest {
 
     @Test
     public void isBirthdayToday_sameMonthDifferentDay_false() {
-        fail();
         ArrayList<String> listNum = new ArrayList<String>();
         for (int x = 1; x <= 9; x++) {
             listNum.add(String.valueOf(x));
@@ -75,7 +70,6 @@ public class PersonTest {
 
     @Test
     public void isBirthdayToday_sameMonthAndDay_true() {
-        fail();
         a.setBirthday(LocalDate.now());
 
         Assertions.assertTrue(a.isBirthdayToday());
@@ -83,7 +77,6 @@ public class PersonTest {
 
     @Test
     public void addToFamily_somePerson_familyHasNewMember() {
-        fail();
         final boolean[] newMember = {false};
         a = new Person(){
             @Override
@@ -99,7 +92,6 @@ public class PersonTest {
 
     @Test
     public void addToFamily_somePerson_personAddedAlsoHasItsFamilyUpdated() {
-        fail();
         Person a1 = new Person();
         a.addToFamily(a1);
 
@@ -108,7 +100,6 @@ public class PersonTest {
 
     @Test
     public void isFamily_nonRelativePerson_false() {
-        fail();
 
         Assertions.assertFalse(new Person().isFamily(new Person()));
 
@@ -124,7 +115,6 @@ public class PersonTest {
 
     @Test
     public void isFamily_relativePerson_true() {
-        fail();
         Person a1 = new Person();
         a.addToFamily(a1);
 
