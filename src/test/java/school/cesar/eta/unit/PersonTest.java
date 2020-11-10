@@ -50,25 +50,22 @@ public class PersonTest {
 
     @Test
     public void isBirthdayToday_differentMonthAndDay_false() {
-        Person person = new Person();
-        LocalDate date = LocalDate.parse("2019-08-12");
-        person.setBirthday(date);
+        Person person = new PersonStub();
+        person.setBirthday(LocalDate.parse("1994-01-10"));
         Assertions.assertFalse(person.isBirthdayToday());
     }
 
     @Test
     public void isBirthdayToday_sameMonthDifferentDay_false() {
-        Person person = new Person();
-        LocalDate date = LocalDate.parse("2020-10-01");
-        person.setBirthday(date);
+        Person person = new PersonStub();
+        person.setBirthday(LocalDate.parse("1994-09-22"));
         Assertions.assertFalse(person.isBirthdayToday());
     }
 
     @Test
     public void isBirthdayToday_sameMonthAndDay_true() {
-        Person person = new Person();
-        LocalDate date = LocalDate.now();
-        person.setBirthday(date);
+        Person person = new PersonStub();
+        person.setBirthday(LocalDate.parse("1996-09-20"));
         Assertions.assertTrue(person.isBirthdayToday());
     }
 
