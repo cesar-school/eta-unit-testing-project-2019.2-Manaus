@@ -3,6 +3,7 @@ package school.cesar.eta.unit;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.Assertions.*;
 import sun.util.calendar.LocalGregorianCalendar;
@@ -48,40 +49,39 @@ public class PersonTest {
     @Test
     public void getName_noFirstNameNorLastName_throwsException() {
         Person person = new Person();
-        String expected = "Name must be filled";
-        try {
+
+        Exception exception = Assertions.assertThrows(RuntimeException.class, () -> {
             person.getName();
-        }catch (RuntimeException ex){
-            Assertions.assertTrue(ex.getMessage().contains(expected));
-        }
+        });
+
+        String expected = "Name must be filled";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expected));
     }
 
     @Test
     public void isBirthdayToday_differentMonthAndDay_false() {
-        Person person = new Person();
-        LocalDate data = LocalDate.parse("2020-05-03");
-        person.setBirthday(data);
-
-        Assertions.assertFalse(person.isBirthdayToday());
+        PersonStub personStub = new PersonStub();
+        LocalDate data = LocalDate.parse("2020-01-01");
+        personStub.setBirthday(data);
+        Assertions.assertFalse(personStub.isBirthdayToday());
 
     }
 
     @Test
     public void isBirthdayToday_sameMonthDifferentDay_false() {
-        Person person = new Person();
-        LocalDate data = LocalDate.parse("2020-10-01");
-        person.setBirthday(data);
-
-        Assertions.assertFalse(person.isBirthdayToday());
+        PersonStub personStub = new PersonStub();
+        LocalDate data = LocalDate.parse("2020-05-01");
+        personStub.setBirthday(data);
+        Assertions.assertFalse(personStub.isBirthdayToday());
     }
 
     @Test
     public void isBirthdayToday_sameMonthAndDay_true() {
-        Person person = new Person();
-        LocalDate data = LocalDate.now();
-        person.setBirthday(data);
-
-        Assertions.assertTrue(person.isBirthdayToday());
+        PersonStub personStub = new PersonStub();
+        LocalDate data = LocalDate.parse("2020-05-03");
+        personStub.setBirthday(data);
+        Assertions.assertTrue(personStub.isBirthdayToday());
     }
 
     @Test
@@ -96,9 +96,9 @@ public class PersonTest {
         person2.setLastName("Fonseca");
         person2.setBirthday(LocalDate.parse("2013-01-25"));
 
-        person1.addToFamily(person2);
+        person2.addToFamily(person1);
 
-        int result = person1.getFamilyList().size();
+        int result = person2.getFamilyList().size();
 
         Assertions.assertEquals(1,result);
 
@@ -140,6 +140,7 @@ public class PersonTest {
 
     @Test
     public void isFamily_relativePerson_true() {
+
         Person person = new Person();
 
         Person person1 = new Person();
@@ -150,6 +151,9 @@ public class PersonTest {
         person.addToFamily(person1);
 
         Assertions.assertTrue(person.isFamily(person1));
+
+
+
 
     }
 }
