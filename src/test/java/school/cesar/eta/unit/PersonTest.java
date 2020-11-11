@@ -72,42 +72,16 @@ public class PersonTest {
 
     @Test
     public void addToFamily_somePerson_familyHasNewMember() {
-        PersonFake personFake1 = new PersonFake();
-        PersonFake personFake2 = new PersonFake();
-
-        personFake1.setName("Maria");
-        personFake1.setLastName("Santos");
-        personFake1.setBirthday(LocalDate.parse("2010-09-01"));
-
-        personFake2.setName("José");
-        personFake2.setLastName("Santos");
-        personFake2.setBirthday(LocalDate.parse("2008-01-01"));
-
-        personFake1.addToFamilyFake(personFake2);
-
-        int expected = personFake1.getFamilyList().size();
-        int actual = 1;
-        Assertions.assertEquals(actual,expected);
+        Person person = new Person();
+        person.addToFamily(person);
+        Assertions.assertTrue(person.isFamily(person));
     }
 
     @Test
     public void addToFamily_somePerson_personAddedAlsoHasItsFamilyUpdated() {
-        PersonFake personFake1 = new PersonFake();
-        PersonFake personFake2 = new PersonFake();
-
-        personFake1.setName("Maria");
-        personFake1.setLastName("Santos");
-        personFake1.setBirthday(LocalDate.parse("2010-09-01"));
-
-        personFake2.setName("José");
-        personFake2.setLastName("Santos");
-        personFake2.setBirthday(LocalDate.parse("2008-01-01"));
-
-        personFake1.addToFamilyFake(personFake2);
-
-        int expected = personFake1.getFamilyList().size();
-        int actual = 1;
-        Assertions.assertEquals(actual,expected);
+        Person person = new Person();
+        person.addToFamily(person);
+        Assertions.assertTrue(person.isFamily(person) == true && person.isFamily(person) == true);
     }
 
     @Test
