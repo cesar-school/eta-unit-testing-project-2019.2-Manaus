@@ -5,8 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Random;
 
 public class PersonTest {
     Person person;
@@ -41,85 +39,69 @@ public class PersonTest {
 
     @Test
     public void isBirthdayToday_differentMonthAndDay_false() {
-        ArrayList<String> numbers = new ArrayList<String>();
-        for (int a = 1; a <= 9; a++) {
-            numbers.add(String.valueOf(a));
-        }
-        numbers.remove(String.valueOf(LocalDate.now().getDayOfMonth()));
-        numbers.remove(String.valueOf(LocalDate.now().getDayOfMonth()));
-        Random random = new Random();
-        int day = random.nextInt(7);
-        int month = random.nextInt(7);
-        String birthDate = LocalDate.now().getYear() + "-0" + numbers.get(month) + "-0" +  numbers.get(day);
-        person.setBirthday(LocalDate.parse(birthDate));
+
+        person = new StubPerson();
+        person.setBirthday(LocalDate.parse("2020-10-18"));
         Assertions.assertFalse(person.isBirthdayToday());
     }
 
     @Test
     public void isBirthdayToday_sameMonthDifferentDay_false() {
-        ArrayList<String> numbers = new ArrayList<String>();
-        for (int a = 1; a <= 9; a++) {
-            numbers.add(String.valueOf(a));
-        }
-        numbers.remove(String.valueOf(LocalDate.now().getDayOfMonth()));
-        Random random = new Random();
-        int day = random.nextInt(7);
-        String birthDate = LocalDate.now().getYear() + "-" + LocalDate.now().getMonthValue() + "-0" +  numbers.get(day);
-        person.setBirthday(LocalDate.parse(birthDate));
+        person = new StubPerson();
+        person.setBirthday(LocalDate.parse("2020-10-15"));
         Assertions.assertFalse(person.isBirthdayToday());
     }
 
     @Test
     public void isBirthdayToday_sameMonthAndDay_true() {
-        LocalDate birthDate = person.getNow();
-        person.setBirthday(birthDate);
+        person = new StubPerson();
+        person.setBirthday(LocalDate.parse("1996-04-17"));
         Assertions.assertTrue(person.isBirthdayToday());
     }
 
     @Test
     public void addToFamily_somePerson_familyHasNewMember() {
-        final boolean[] familyNewMember = {false};
-        person = new Person(){
-            @Override
-            public void addToFamily(Person person) {
-                familyNewMember[0] = true;
-                super.addToFamily(person);
-            }
-        };
-        person.addToFamily(new Person());
-        Assertions.assertTrue(familyNewMember[0]);
+        Person person1 = new Person();
+        person.addToFamily(person1);
+        Assertions.assertTrue(person.isFamily(person1));
     }
 
     @Test
     public void addToFamily_somePerson_personAddedAlsoHasItsFamilyUpdated() {
         Person person1 = new Person();
         person.addToFamily(person1);
-        Assertions.assertEquals(person.isFamily(person1), person1.isFamily(person));
+        Assertions.assertTrue(person.isFamily(person1) == true && person1.isFamily(person) == true);
     }
 
     @Test
     public void isFamily_nonRelativePerson_false() {
         Assertions.assertFalse(new Person().isFamily(new Person()));
-        Person person1 = new Person(){
-            @Override
-            public boolean isFamily(Person person) {
-                return false;
-            }
-        };
-        Assertions.assertFalse(person1.isFamily(new Person()));
     }
 
     @Test
     public void isFamily_relativePerson_true() {
-        Person person1 = new Person();
-        person.addToFamily(person1);
-        Assertions.assertTrue(person.isFamily(person1));
-        Person person2 = new Person(){
+        final Person[] people = new Person[2];
+        Person person1 = new Person(){
+            @Override
+            public void addToFamily(Person person) {
+                people[0] = person;
+                super.addToFamily(person);
+            }
+
             @Override
             public boolean isFamily(Person person) {
-                return true;
+                people[1] = person;
+                return super.isFamily(person);
             }
         };
-        Assertions.assertTrue(person2.isFamily(person));
+        person1.addToFamily(person);
+        person1.isFamily(person);
+        Assertions.assertTrue(person1.isFamily(person));
+        Assertions.assertEquals(people[0], people[1]);
+
+
     }
+
 }
+
+
