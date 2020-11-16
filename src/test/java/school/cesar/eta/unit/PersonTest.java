@@ -2,18 +2,17 @@ package school.cesar.eta.unit;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeEach;
-
 import java.time.LocalDate;
 
 public class PersonTest {
-    Person person;
+     Person person;
 
     @BeforeEach
     public void setup(){
         person = new Person();
     }
+
 
     @Test
     public void getName_firstNameJonLastNameSnow_jonSnow() {
@@ -46,8 +45,15 @@ public class PersonTest {
     @Test
     public void isBirthdayToday_differentMonthAndDay_false() {
         LocalDate date_old = LocalDate.parse("2016-02-06");
-        person.setBirthday(date_old);
 
+        /* Stub to save getNow result */
+        person = new Person() {
+            public LocalDate getNow() {
+                return LocalDate.parse("2020-11-15");
+            }
+        };
+
+        person.setBirthday(date_old);
         Assertions.assertFalse(person.isBirthdayToday());
     }
 
@@ -55,14 +61,28 @@ public class PersonTest {
     public void isBirthdayToday_sameMonthDifferentDay_false() {
         LocalDate date_old = LocalDate.parse("2020-10-06");
 
-        person.setBirthday(date_old);
+        /* Stub to save getNow result */
+        person = new Person() {
+            public LocalDate getNow() {
+                return LocalDate.parse("2020-11-15");
+            }
+        };
 
+        person.setBirthday(date_old);
         Assertions.assertFalse(person.isBirthdayToday());
     }
 
     @Test
     public void isBirthdayToday_sameMonthAndDay_true() {
-        LocalDate date_now = person.getNow();
+        /* Force a date */
+        LocalDate date_now = LocalDate.parse("2020-11-15");
+
+        /* Stub to save getNow result */
+        person = new Person() {
+            public LocalDate getNow() {
+                return LocalDate.parse("2020-11-15");
+            }
+        };
 
         person.setBirthday(date_now);
 
@@ -80,9 +100,12 @@ public class PersonTest {
             }
         };
 
-        person_new.addToFamily(new Person());
+        Person person = new Person();
+        person_new.addToFamily(person);
 
         Assertions.assertTrue(member[0]);
+        /* Check if person_new has the member that was added */
+        Assertions.assertTrue(person_new.isFamily(person));
     }
 
     @Test
@@ -91,6 +114,9 @@ public class PersonTest {
         person.addToFamily(person_new);
 
         Assertions.assertEquals(person.isFamily(person_new), person_new.isFamily(person));
+        /* More coverage test */
+        Assertions.assertTrue(person_new.isFamily(person));
+        Assertions.assertTrue(person.isFamily(person_new));
     }
 
     @Test
@@ -100,8 +126,17 @@ public class PersonTest {
 
     @Test
     public void isFamily_relativePerson_true() {
-        Person new_person = new Person();
-        person.addToFamily(new_person);
-        Assertions.assertTrue(person.isFamily(new_person));
+        final boolean[] member = {false};
+        /* Isolate addToFamily method */
+        Person person_new = new Person() {
+            @Override
+            public void addToFamily(Person person) {
+                member[0] = true;
+                super.addToFamily(person);
+            }
+        };
+
+        person.addToFamily(person_new);
+        Assertions.assertTrue(person.isFamily(person_new));
     }
 }
